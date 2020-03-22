@@ -1,14 +1,17 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
-import MyContext from './context/MyContext'
+
+import SessionContext from './util/SessionContext'
+import {getSessionCookie, setSessionCookie} from './util/SessionCookie';
+
 import { Router } from '@reach/router'
 import {CssBaseline} from '@material-ui/core'
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import {green} from '@material-ui/core/colors';
+
 import Main from './views/Main';
 import Register from './views/Register';
 import Login from './views/Login';
-
 
 const theme = createMuiTheme({ 
   palette: { 
@@ -18,11 +21,16 @@ const theme = createMuiTheme({
 });
 
 function App() {
-  const [user, setUser] = useState({firstName:"", lastName: "", id: ""});
+  const [session, setSession] = useState(getSessionCookie());
+
+  useEffect(() => {
+    console.log("persisting session via useEffect")
+    setSessionCookie(session);
+  }, [session])
 
   return (
     <div className="App">
-      <MyContext.Provider value={{user, setUser}}>
+      <SessionContext.Provider value={{session, setSession}}>
         <ThemeProvider theme={theme}>
           <CssBaseline/>
           <Router>
@@ -31,7 +39,7 @@ function App() {
               <Login path="login"/>
           </Router>
         </ThemeProvider>
-      </MyContext.Provider>
+      </SessionContext.Provider>
     </div>
   );
 }

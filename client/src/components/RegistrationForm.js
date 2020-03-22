@@ -2,11 +2,13 @@ import React, {useState, useContext} from 'react';
 import { Button } from '@material-ui/core';
 import TextInput from './TextInput';
 import axios from 'axios';
-import SpeechEndpoint from "../constants/SpeechEndpoint";
-import MyContext from '../context/MyContext'
+import { navigate } from '@reach/router';
+
+import SpeechEndpoint from '../constants/SpeechEndpoint';
+import SessionContext from '../util/SessionContext';
 
 export default () => {
-    const context = useContext(MyContext);
+    const session = useContext(SessionContext);
 
     const [newUser, setNewUser] = useState({
         firstName: "",
@@ -29,12 +31,16 @@ export default () => {
 
         axios.post(SpeechEndpoint + "register", newUser)
             .then(res => {
-                context.setUser({
-                    firstName:newUser.firstName, 
-                    lastName:newUser.lastName,
-                    id: res.data._id
+                //set session user
+                session.setSession({
+                    ...session,
+                    userId: res.data._id,
+                    firstName: newUser.firstName, 
+                    lastName: newUser.lastName,
                 })
-                setNewUser({});
+                //remove form user
+                //setNewUser({});
+                navigate('/');
             })
             .catch(err => {
                 console.log(err.response);
@@ -51,15 +57,20 @@ export default () => {
     return (
         <form onSubmit={register}>
             <TextInput labelText="First Name" fieldName="firstName" 
-                value={newUser.firstName} errors={errors} changeHandler={changeHandler}/>
+                value={newUser.firstName} error={errors["firstName"]} changeHandler={changeHandler}/>
+            
             <TextInput labelText="Last Name" fieldName="lastName" 
-                value={newUser.lastName} errors={errors} changeHandler={changeHandler}/>
+                value={newUser.lastName} error={errors["lastName"]} changeHandler={changeHandler}/>
+            
             <TextInput labelText="Email" fieldName="email" type="email"
-                value={newUser.email} errors={errors} changeHandler={changeHandler}/>
+                value={newUser.email} error={errors["email"]} changeHandler={changeHandler}/>
+            
             <TextInput labelText="Password" fieldName="password" type="password"
-                value={newUser.password} errors={errors} changeHandler={changeHandler}/>
+                value={newUser.password} error={errors["password"]} changeHandler={changeHandler}/>
+            
             <TextInput labelText="Confirm Password" fieldName="passwordConfirm" type="password"
-                value={newUser.passwordConfirm} errors={errors} changeHandler={changeHandler}/>
+                value={newUser.passwordConfirm} error={errors["passwordConfirm"]} changeHandler={changeHandler}/>
+            
             <Button type="button" variant="contained" color="primary" onClick={register}>Register</Button>
         </form>
     )

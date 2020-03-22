@@ -1,18 +1,19 @@
 import React, {useContext} from 'react';
-// import RegistrationForm from '../components/RegistrationForm';
-// import LoginForm from '../components/LoginForm';
-import MyContext from '../context/MyContext'
-import { navigate, Redirect } from '@reach/router'
+import SessionContext from '../util/SessionContext'
+import { Redirect } from '@reach/router'
+
+import PageHeader from '../components/PageHeader'
 
 export default (props) => {
-    const context = useContext(MyContext);
+    const context = useContext(SessionContext);
 
-    if (!context.user.id){
+    if (!context.session.userId){
         console.log("redirecting to login")
         return <Redirect noThrow to="/login" />
     }
 
-    return (
-        <p>Welcome to the main page</p>
-    )
+    return (<>
+        <PageHeader currentPage="home"/>
+        <p>Welcome, {context.session.firstName}</p>
+    </>)
 }

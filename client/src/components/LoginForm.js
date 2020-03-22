@@ -1,12 +1,22 @@
 import React, {useState, useContext} from 'react';
-import { Button } from '@material-ui/core';
+import { Button, FormHelperText } from '@material-ui/core';
 import TextInput from './TextInput';
 import axios from 'axios';
+import { navigate } from '@reach/router';
+
 import SpeechEndpoint from "../constants/SpeechEndpoint";
-import MyContext from '../context/MyContext'
+import SessionContext from '../util/SessionContext';
+import AxiosErrors from '../util/AxiosErrors';
+
+const genericError = {
+    padding: "10px 15px",
+    marginTop: "10px",
+    textAlign: "center",
+    fontSize: "1rem"
+}
 
 export default () => {
-    const context = useContext(MyContext);
+    const context = useContext(SessionContext);
 
     const [user, setUser] = useState({
         email: "",
@@ -16,30 +26,41 @@ export default () => {
     const [errors, setErrors] = useState({});
 
     const changeHandler = (fieldName, value) => {
-        //console.log(fieldName, value);
         setUser({ ...user, [fieldName]: value })
     }
 
     const login = (e) => {
         e.preventDefault();
-        setErrors({});
         
         axios.post(SpeechEndpoint + "login", user)
             .then(res => {
-                context.setUser({
+                console.log(res.data);
+                //console.log("session (from login form) before update:", context.session);
+                context.setSession({
+                    ...context.session,
+                    userId: res.data._id,
                     firstName: res.data.firstName,
                     lastName: res.data.lastName,
-                    id:res.data._id,
                 })
-                setUser({});
+                navigate('/');
+            })
+            .catch(err => {
+                setErrors(AxiosErrors(err));
             })
     }
 
     return (<>
         <form onSubmit={login}>
-            <TextInput labelText="Email" fieldName="email" value={user.email} errors={errors} changeHandler={changeHandler}/>
-            <TextInput labelText="Password" fieldName="password" value={user.password} errors={errors} changeHandler={changeHandler}/>
-            <Button type="button" variant="contained" color="primary" onClick={login}>Register</Button>
+            <TextInput labelText="Email" fieldName="email" 
+                value={user.email} error={errors["email"]} changeHandler={changeHandler}/>
+
+            <TextInput labelText="Password" fieldName="password" type="password"
+                value={user.password} error={errors["password"]} changeHandler={changeHandler}/>
+
+            <Button type="button" variant="contained" color="primary" onClick={login}>Log In</Button>
         </form>
+        {errors["error"] && 
+            <FormHelperText style={genericError}  error={true}>{errors["error"]}</FormHelperText> 
+        }        
     </>)
 }

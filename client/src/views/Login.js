@@ -1,13 +1,16 @@
 import React from 'react';
 import LoginForm from '../components/LoginForm';
-import { Link } from '@reach/router'
+
+import PageHeader from '../components/PageHeader'
+import WrappedLink from '../components/WrappedLink'
 
 export default () => {
 
     return (<>
+        <PageHeader currentPage="login"/>
         <h2>Log In</h2>
         <LoginForm />
-        <p>New user? <Link to="/register">Register</Link></p>
+        <p>New user? <WrappedLink to="/register">Register</WrappedLink></p>
     </>)
 
 }

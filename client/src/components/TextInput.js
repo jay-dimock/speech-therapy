@@ -7,18 +7,13 @@ const useStyles = makeStyles(theme => ({
       '& > *': { margin: theme.spacing(1) }
     },
     helperText: {
-        marginTop: "0"
+        marginTop: "0", padding: "0"
     }
   }));
 
 export default (props) => {
-    const {labelText, fieldName, value, errors} = props;
+    const {labelText, fieldName, value, error, changeHandler} = props;
     const inputType = props.type ?? "text"
-
-    const changeHandler = e => {
-        e.preventDefault();
-        props.changeHandler(fieldName, e.target.value);
-    }
 
     const classes = useStyles();
 
@@ -28,13 +23,13 @@ export default (props) => {
                 type={inputType} 
                 label={labelText} 
                 value={value} 
-                onChange={changeHandler} 
+                onChange={(e) => changeHandler(fieldName, e.target.value)} 
                 variant="filled" 
-                error={errors[fieldName] && true}/>
-            {errors[fieldName] && 
+                error={error && true}/>
+            {error && 
                 <FormHelperText 
                     className={classes.helperText} 
-                    error={true}>{errors[fieldName]}
+                    error={true}>{error}
                 </FormHelperText>}
         </FormControl><br/>
     </>)
