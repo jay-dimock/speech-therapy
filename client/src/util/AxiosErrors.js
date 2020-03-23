@@ -2,7 +2,7 @@ export default (err) => {
     if(!err.response) {
         if(err.isAxiosError) {
             console.log(err.toJSON());
-            const msg = `${err.name}: ${err.message}`;
+            let msg = `${err.name}: ${err.message}`;
             if (err.description) msg += "description: " + err.description;
             return {error: msg};
         } else {

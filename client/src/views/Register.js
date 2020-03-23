@@ -10,7 +10,7 @@ export default () => {
         <PageHeader currentPage="register"/>
         <h2>Register New User</h2>
         <RegistrationForm />
-        <p>Already a registered? <WrappedLink to="/login">Log In</WrappedLink></p>
+        <div style={{marginTop:"10px"}}>Already a registered? <WrappedLink to="/login">Log In</WrappedLink></div>
     </>)
 
 }

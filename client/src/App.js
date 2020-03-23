@@ -12,6 +12,8 @@ import {green} from '@material-ui/core/colors';
 import Main from './views/Main';
 import Register from './views/Register';
 import Login from './views/Login';
+import Logout from './views/Logout';
+import Exercise from './views/Exercise';
 
 const theme = createMuiTheme({ 
   palette: { 
@@ -37,6 +39,8 @@ function App() {
               <Main default path="/"/>
               <Register path="register"/>
               <Login path="login"/>
+              <Logout path="logout"/>
+              <Exercise path="exercise"/>
           </Router>
         </ThemeProvider>
       </SessionContext.Provider>

@@ -6,25 +6,22 @@ import SessionContext from '../util/SessionContext';
 
 export default (props) => {
     const context = useContext(SessionContext);
-    //const linkText = props.linkText || "Back to Home";
-    //const linkTo = props.linkTo || "/";
     const { currentPage } = props;
     const links = [];
 
-    if (context.session.userId && currentPage !== "home") {
-        links.push(<WrappedLink to="/">Back to Home</WrappedLink>);
+    if (currentPage !== "home") {
+        links.push(<WrappedLink to="/">Home</WrappedLink>);
+    } else if ( !context.session.userId ) {
+        links.push(<WrappedLink to="/login">Log In</WrappedLink>)
     }
 
-    if (currentPage !== "about") links.push(<WrappedLink to="/about">About</WrappedLink>);
-
     if (context.session.userId) {
-      
-        if (currentPage !== "exercises") links.push(<WrappedLink to="/exercises">Exercises</WrappedLink>)
+        if (currentPage !== "exercise") links.push(<WrappedLink to="/exercise">Exercises</WrappedLink>)
         if (currentPage !== "reports") links.push(<WrappedLink to="/reports">Reports</WrappedLink>)
         
         links.push(<>
             <span style={{marginLeft:"40px"}}>Logged in as: {context.session.firstName}</span>
-            <WrappedLink to="/login">Log Out</WrappedLink>
+            <WrappedLink to="/logout">Log Out</WrappedLink>
         </>);
     }
 

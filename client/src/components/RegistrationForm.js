@@ -6,9 +6,10 @@ import { navigate } from '@reach/router';
 
 import SpeechEndpoint from '../constants/SpeechEndpoint';
 import SessionContext from '../util/SessionContext';
+import AxiosErrors from '../util/AxiosErrors';
 
 export default () => {
-    const session = useContext(SessionContext);
+    const context = useContext(SessionContext);
 
     const [newUser, setNewUser] = useState({
         firstName: "",
@@ -32,25 +33,16 @@ export default () => {
         axios.post(SpeechEndpoint + "register", newUser)
             .then(res => {
                 //set session user
-                session.setSession({
-                    ...session,
+                context.setSession({
+                    ...context.session,
                     userId: res.data._id,
                     firstName: newUser.firstName, 
                     lastName: newUser.lastName,
                 })
-                //remove form user
-                //setNewUser({});
                 navigate('/');
             })
             .catch(err => {
-                console.log(err.response);
-                const errResponse = err.response.data.errors;
-                const errDict = {};
-                for (const key of Object.keys(errResponse)) {
-                    console.log(`${key}: ${errResponse[key].message}`);
-                    errDict[key] = errResponse[key].message;
-                }
-                setErrors(errDict);
+                setErrors(AxiosErrors(err));
             })
     }
 
