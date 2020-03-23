@@ -33,8 +33,10 @@ export default (props) => {
     
     useEffect(() => {
         setTimeout(() => {
-            if(seconds > 0) setSeconds(seconds - 1)
-            else if (listening) {
+            if(seconds > 0) {
+                if (listening) setSeconds(seconds - 1)
+                else setSeconds(0);
+            } else if (listening) {
                 stop();
                 setSeconds(0);
             }
@@ -44,7 +46,7 @@ export default (props) => {
     const startCategory = (e) => {
         e.preventDefault();
         setCategory(getNewCategory);
-        setSeconds(20);
+        setSeconds(60);
         setTranscript("");
         listen({interimResults:false});
     }

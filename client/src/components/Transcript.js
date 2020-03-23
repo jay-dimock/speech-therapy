@@ -9,7 +9,7 @@ const wordStyle = {
 }
 
 export default (props) => {
-    const arr = props.text.split(" ").filter(w=>w);
+    const arr = props.text.split(" ").filter(w=>w); //filter prevents empty strings from counting as a word 
     let unique = [...new Set(arr)]; //removes duplicate words
 
     return (<div className="container" style={{marginTop:"15px", overflow:"wrap"}}>
