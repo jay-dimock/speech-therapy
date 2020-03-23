@@ -1,7 +1,7 @@
 const {User} = require('../models/user.model');
 
 module.exports.createUser = (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     User.findOne({ email: req.body.email })
         .then(existingUser => {
             //console.log(existingUser);
