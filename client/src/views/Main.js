@@ -15,7 +15,7 @@ export default (props) => {
         <div className="container">
         {context.session.userId && <>
             <h3>Welcome, {context.session.firstName}!</h3>
-            <WrappedLink to="/exercies"><h4>Start Exercises</h4></WrappedLink>
+            <WrappedLink to="/exercise"><h4>Start Exercises</h4></WrappedLink>
         </>}
         
         <h2>About</h2>

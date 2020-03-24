@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
 
-import SessionContext from './util/SessionContext'
+import SessionContext from './util/SessionContext';
 import {getSessionCookie, setSessionCookie} from './util/SessionCookie';
 
-import { Router } from '@reach/router'
-import {CssBaseline} from '@material-ui/core'
+import { Router } from '@reach/router';
+import {CssBaseline} from '@material-ui/core';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import {green} from '@material-ui/core/colors';
 
@@ -14,6 +14,8 @@ import Register from './views/Register';
 import Login from './views/Login';
 import Logout from './views/Logout';
 import Exercise from './views/Exercise';
+import EditExercise from './views/EditExercise';
+import OldBrowser from './views/OldBrowser';
 
 const theme = createMuiTheme({ 
   palette: { 
@@ -36,11 +38,13 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline/>
           <Router>
-              <Main default path="/"/>
+              <Main default path="/" />
               <Register path="register"/>
-              <Login path="login"/>
-              <Logout path="logout"/>
-              <Exercise path="exercise"/>
+              <Login path="login" />
+              <Logout path="logout" />
+              <Exercise path="exercise" />
+              <EditExercise path="editexercise/:id" />
+              <OldBrowser path="oldbrowser" />
           </Router>
         </ThemeProvider>
       </SessionContext.Provider>

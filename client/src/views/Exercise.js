@@ -1,14 +1,17 @@
 import React, {useContext, useState, useEffect} from 'react';
-import { useSpeechRecognition } from "react-speech-kit"; //https://github.com/MikeyParton/react-speech-kit
+import { useSpeechRecognition } from 'react-speech-kit'; //https://github.com/MikeyParton/react-speech-kit
+import axios from 'axios';
 
-import { Redirect } from '@reach/router'
+import { Redirect, navigate } from '@reach/router'
 import {Button} from '@material-ui/core';
 
-import SessionContext from '../util/SessionContext'
-import PageHeader from '../components/PageHeader'
+import SpeechEndpoint from '../constants/SpeechEndpoint';
+import SessionContext from '../util/SessionContext';
+import PageHeader from '../components/PageHeader';
 import Categories from '../constants/Categories';
 import Timer from '../components/Timer';
 import Transcript from '../components/Transcript';
+import AxiosErrors from '../util/AxiosErrors';
 
 
 export default (props) => {
@@ -21,6 +24,9 @@ export default (props) => {
     const { listen, listening, stop, supported } = useSpeechRecognition({
         onResult: result => {
             setTranscript(prevTranscript => prevTranscript + " " + result);
+        },
+        onEnd: () => {
+            endExercise();
         }
     })
 
@@ -38,17 +44,37 @@ export default (props) => {
                 else setSeconds(0);
             } else if (listening) {
                 stop();
-                setSeconds(0);
+                if (seconds !== 0) setSeconds(0);
             }
         }, 1000);
+        //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [seconds]);
 
     const startCategory = (e) => {
         e.preventDefault();
+        restart();
+    }
+
+    const restart = () => { //called from 2 places
         setCategory(getNewCategory);
         setSeconds(60);
         setTranscript("");
         listen({interimResults:false});
+    }
+
+    const endExercise = () => {
+        //stop();
+
+        axios.post(SpeechEndpoint + "exercise", 
+            {userId:context.session.userId, category:category, transcript:transcript})
+            .then(result => {
+                console.log(result.data);
+                if (result.data.wordLength === 0) restart();
+                else navigate('/editexercise/' + result.data._id)
+            })
+            .catch(err => {
+                console.log(AxiosErrors(err));
+            })
     }
 
     const getNewCategory = () => {
@@ -69,9 +95,8 @@ export default (props) => {
             <h3>{category}</h3>
             <Timer seconds={seconds}/>
             <div>{listening ? "listening" : "stopped listening"}</div>
-            {/* <textarea value={transcript}
-                onChange={e => setTranscript(e.target.value)} /> */}
-            {listening && <Button variant="contained" color="secondary" onClick={stop}>Quit Early</Button>}
+
+            {listening && <Button variant="contained" color="secondary" onClick={() => setSeconds(0)}>Quit Early</Button>}
             <Transcript text={transcript} />
         </>}
         {!category && <Button variant="contained" color="primary" onClick={startCategory}>Start!</Button>}

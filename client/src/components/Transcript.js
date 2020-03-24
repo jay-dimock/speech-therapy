@@ -13,6 +13,7 @@ export default (props) => {
     let unique = [...new Set(arr)]; //removes duplicate words
 
     return (<div className="container" style={{marginTop:"15px", overflow:"wrap"}}>
+        <h4>Words: {unique.length}</h4>
         {unique.map((word, i) => {
             return <span style={wordStyle} key={i}>{word}</span>
         })}
