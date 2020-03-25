@@ -13,7 +13,7 @@ const ExerciseSchema = new mongoose.Schema({
         minlength: [1, "Category is empty"],
     },
 
-    words: [{type: String}] 
+    words: [{type: String}],
 
 }, {timestamps: true});
 

@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import { navigate } from '@reach/router'
-import ClearIcon from '@material-ui/icons/Clear';
+//import ClearIcon from '@material-ui/icons/Clear';
 
 import SpeechEndpoint from '../constants/SpeechEndpoint';
 import AxiosErrors from '../util/AxiosErrors';
 import Word from '../components/Word';
+import DeleteWord from '../components/DeleteWord';
 
 
 const wordStyle = {
@@ -16,23 +17,16 @@ const wordStyle = {
     margin: "6px 6px",
 }
 
-const iconStyle = {
-    fontSize: "medium",
-    verticalAlign: "middle",
-    marginRight: "5px",
-}
-
 export default (props) => {
-    const [words, setWords] = useState([...props.words]);
+    const {words, setWords} = props;
     const [deleting, setDeleting] = useState(false);
 
     const deleteWord = (index) => {
-        console.log("index to delete: " + index);
-        if (deleting) return;        
+        if (deleting) return; 
         setDeleting(true);
         axios.put(SpeechEndpoint + "exercise/" + props.exerciseId + "/deleteWord", {index: index})
             .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                 if (response.data.words.length > 0) setWords(response.data.words);
                 else deleteExercise();
             })
@@ -43,7 +37,7 @@ export default (props) => {
     const deleteExercise = () => {
         axios.delete(SpeechEndpoint + "exercise/" + props.exerciseId)
             .then(response => {
-                console.log(response);
+                console.log("deleted exercise. navigating to new exercise");
                 navigate ("/exercise");
             })
             .catch(err => { AxiosErrors(err); })
@@ -54,7 +48,7 @@ export default (props) => {
         {words.map((word, i) => {
             return (
                 <span style={wordStyle} key={word+i}>
-                    <ClearIcon style={iconStyle} color="secondary" onClick={() => deleteWord(i)}/> 
+                    <DeleteWord action={() => deleteWord(i)} />
                     <Word exerciseId={props.exerciseId} index={i} word={word} deleteWord={deleteWord}/>
                 </span>);
         })}

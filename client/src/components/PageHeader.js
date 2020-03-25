@@ -10,18 +10,18 @@ export default (props) => {
     const links = [];
 
     if (currentPage !== "home") {
-        links.push(<WrappedLink to="/">Home</WrappedLink>);
+        links.push(<WrappedLink to="/" menuItem={true}>Home</WrappedLink>);
     } else if ( !context.session.userId ) {
-        links.push(<WrappedLink to="/login">Log In</WrappedLink>)
+        links.push(<WrappedLink to="/login" menuItem={true}>Log In</WrappedLink>)
     }
 
     if (context.session.userId) {
-        if (currentPage !== "exercise") links.push(<WrappedLink to="/exercise">Exercises</WrappedLink>)
-        if (currentPage !== "reports") links.push(<WrappedLink to="/reports">Reports</WrappedLink>)
+        if (currentPage !== "exercise") links.push(<WrappedLink to="/exercise/fresh" menuItem={true}>Exercises</WrappedLink>)
+        if (currentPage !== "reports") links.push(<WrappedLink to="/reports/onedate/today" menuItem={true}>Reports</WrappedLink>)
         
         links.push(<>
             <span style={{marginLeft:"40px"}}>Logged in as: {context.session.firstName}</span>
-            <WrappedLink to="/logout">Log Out</WrappedLink>
+            <WrappedLink to="/logout" menuItem={true}>Log Out</WrappedLink>
         </>);
     }
 

@@ -14,7 +14,9 @@ import Register from './views/Register';
 import Login from './views/Login';
 import Logout from './views/Logout';
 import Exercise from './views/Exercise';
+import StartExercise from './views/StartExercise';
 import EditExercise from './views/EditExercise';
+import Reports from './views/Reports';
 import OldBrowser from './views/OldBrowser';
 
 const theme = createMuiTheme({ 
@@ -42,8 +44,11 @@ function App() {
               <Register path="register"/>
               <Login path="login" />
               <Logout path="logout" />
-              <Exercise path="exercise" />
-              <EditExercise path="editexercise/:id" />
+              <Exercise path="exercise/:param" />
+              <StartExercise path="startexercise" />
+              <EditExercise path="editexercise/:id" />              
+              <Reports path="reports/:report/:param" />  
+              <Reports path="reports" />  
               <OldBrowser path="oldbrowser" />
           </Router>
         </ThemeProvider>

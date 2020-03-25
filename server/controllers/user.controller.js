@@ -21,6 +21,7 @@ module.exports.createUser = (req, res) => {
 
 module.exports.login = (req, res) => {
     //console.log(req.body);
+
     User.findOne({ email: req.body.email })
         .then(user => {
             //console.log(user);
@@ -28,6 +29,7 @@ module.exports.login = (req, res) => {
                 res.status(400).json({errors: { email: {message: "Email was not found" }}});
             } else {
                 res.json(user);
+                // console.log(user);
                 // bcrypt.compare(req.body.password, user.password)
                 //     .then(passwordIsValid => {
                 //         console.log("passwordIsValid: " + passwordIsValid);

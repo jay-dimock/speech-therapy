@@ -27,7 +27,7 @@ export default (props) => {
 
     return (
         <ContentEditable 
-            style={{display:"inline-block"}} 
+            style={{display:"inline-block", marginLeft: "5px"}} 
             html={word} 
             onKeyPress={(e) => disableNewLines(e)}
             onChange={updateWord}/>

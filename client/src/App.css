@@ -7,4 +7,8 @@
   margin: 0 auto;
 }
 
-p { text-align:left;}
+.left { text-align:left; }
+
+ul.spaced li {
+  margin-bottom:0.4rem;
+}
