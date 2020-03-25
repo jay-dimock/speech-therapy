@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import { Redirect, navigate } from '@reach/router'
-import {Button, Link} from '@material-ui/core';
+import {Button} from '@material-ui/core';
 import SessionContext from '../util/SessionContext';
 import PageHeader from '../components/PageHeader';
 import Instructions from '../components/Instructions';
