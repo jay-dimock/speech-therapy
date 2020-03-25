@@ -17,7 +17,7 @@ const AllDates = (props) => {
         const timezone = encodeURIComponent(Intl.DateTimeFormat().resolvedOptions().timeZone);
         axios.get(SpeechEndpoint + "reports/alldates/" + timezone + "/" + context.session.userId)
             .then(res => {
-                console.log(res.data);
+                //console.log(res.data);
                 setData(res.data);
                 setLoaded(true);
             })

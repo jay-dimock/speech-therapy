@@ -18,7 +18,6 @@ export default (props) => {
     const context = useContext(SessionContext);
     if (!context.session.userId) { return <Redirect noThrow to="/login" /> }
 
-    const [listeningState, setListeningState] = useState(false);
     const [seconds, setSeconds] = useState(0);
     const [transcript, setTranscript] = useState("");
     const [category, setCategory] = useState("");
@@ -30,7 +29,6 @@ export default (props) => {
         },
         onEnd: () => {
             console.log("on end triggered")
-            setListeningState(false);
             endExercise();
         }
     })
@@ -42,10 +40,9 @@ export default (props) => {
             Learn more about browser compatibility</a></div>);
     }
 
-    useEffect(() => {
-        setListeningState(listening);        
-        console.log("   listening: " + listening);        
-    }, [listening]);
+    // useEffect(() => {
+    //     console.log("   listening: " + listening);        
+    // }, [listening]);
 
 
    useEffect(() => {  //listen() has to run in useEffect or it will throw errors.  
@@ -58,7 +55,7 @@ export default (props) => {
         setTimeout(() => {
             if(seconds > 0) {
                 if (listening) setSeconds(seconds - 1)
-                else setSeconds(0);
+                else stop(); //setSeconds(0);
             } else if (listening) {                
                 stop();
             }
@@ -104,12 +101,9 @@ export default (props) => {
                 <h4>The category is...</h4>
                 <h3>{category}</h3>
                 <Timer seconds={seconds}/>
-                <div>{listeningState ? "listening" : "stopped listening"}</div>
-
-                {listeningState && 
                     <Button variant="contained" color="secondary" onClick={stop}>
                         {transcript.length===0 ? "New Category" : "Quit Early"}
-                    </Button>}
+                    </Button>
                 <Transcript text={transcript} />
             </>}
         </div>

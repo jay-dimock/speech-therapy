@@ -37,9 +37,9 @@ export default (props) => {
             <h2>Results</h2>
             <h3>Category: {category}</h3>
             <Button variant="contained" color="primary" onClick={() => navigate("/startexercise")}>Start New Exercise</Button>
-            <p>You recorded <b>{words.length} words!</b><br/>
-            You can edit a word by typing over it. and delete a word by clicking the delete symbol: <DeleteWord action={()=>false}/>,
-            or by backspacing over the entire word. Your changes will automatically be saved.</p>
+            <h4>You recorded <b>{words.length} words!</b></h4>
+            <p>You can edit a word by typing over it.<br/>To delete a word, by click the delete symbol: <DeleteWord action={()=>false}/>,
+            or back-space over the entire word.<br/>Your changes will automatically be saved.</p>
             {loaded && <EditWords words={words} setWords={setWords} exerciseId={props.id} />} 
         </div>
     </>);

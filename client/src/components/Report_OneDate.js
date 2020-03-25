@@ -16,19 +16,19 @@ const OneDate = (props) => {
     
     const todayString = new Date().toISOString().substring(0, 10)
     const reportDateString = props.date === "today" ? todayString : props.date;
-    const isToday = props.date === todayString;
+    const isToday = reportDateString === todayString;
     
     //converting from format YYYY-MM-DD results in the GMT date, not local date. 
     //to prevent this, we have to convert the format to YYYY/MM/DD. see this post:
     //https://stackoverflow.com/questions/7556591/is-the-javascript-date-object-always-one-day-off
-    const friendlyDate = new Date(reportDateString.replace(/-/g, '\/')).toDateString();
+    const friendlyDate = new Date(reportDateString.replace(/-/g, '/')).toDateString();
 
     useEffect(() => {
         //const dateParam = date.toISOString().substring(0, 10);
         const timezone = encodeURIComponent(Intl.DateTimeFormat().resolvedOptions().timeZone);
         axios.get(SpeechEndpoint + `reports/onedate/${reportDateString}/${timezone}/${context.session.userId}`)
             .then(res => {
-                console.log(res.data);
+                //console.log(res.data);
                 if (res.data.length === 0) {
                     console.log("No exercises found for " + reportDateString + ". Redirecting to all dates.");
                     navigate('/reports');
@@ -39,8 +39,7 @@ const OneDate = (props) => {
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return (<>
-        
+    return (<>        
         <h3>{isToday ? "Today's Activity" : "Activity for " + friendlyDate}</h3>
         {!isToday && <p>Editing is only possible for exercises performed on today's date.</p>}
         <WrappedLink to="/reports">View activity for another date</WrappedLink>
