@@ -2,12 +2,19 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import { navigate } from '@reach/router'
 
-import { DndProvider } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
-
 import SpeechEndpoint from '../constants/SpeechEndpoint';
 import AxiosErrors from '../util/AxiosErrors';
-import WordDraggable from '../components/WordDraggable';
+import Word from './Word';
+import DeleteWord from './DeleteWord';
+
+
+const wordStyle = {
+    display: "inline-block",
+    border: "1px solid lightgray",
+    borderRadius: "6px",
+    padding: "4px 8px",
+    margin: "6px 6px",
+}
 
 export default (props) => {
     const {words, setWords} = props;
@@ -37,12 +44,12 @@ export default (props) => {
 
 
     return (<div style={{marginTop:"15px", overflow:"wrap"}}>
-        <DndProvider backend={HTML5Backend}>
-            {words.map((word, i) => {
-                return (
-                    <WordDraggable key={word+i} index={i} exerciseId={props.exerciseId} word={word} deleteWord={deleteWord}/>
-                );
-            })}
-        </DndProvider>        
+        {words.map((word, i) => {
+            return (
+                <span style={wordStyle} key={word+i}>
+                    <DeleteWord action={() => deleteWord(i)} />
+                    <Word exerciseId={props.exerciseId} index={i} word={word} deleteWord={deleteWord}/>
+                </span>);
+        })}
     </div>);
 }

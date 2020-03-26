@@ -21,7 +21,6 @@ export default (props) => {
     const [seconds, setSeconds] = useState(0);
     const [transcript, setTranscript] = useState("");
     const [category, setCategory] = useState("");
-    //let ticker;
 
     const { listen, listening, stop, supported } = useSpeechRecognition({
         onResult: result => {
@@ -49,7 +48,6 @@ export default (props) => {
 
     useEffect(() => {
         //console.log("timer useEffect fired. seconds = " + seconds); 
-
         const ticker = setTimeout(() => {  
             if(seconds > 0) {
                 if (listening) setSeconds(seconds - 1)
@@ -92,11 +90,6 @@ export default (props) => {
             .catch(err => AxiosErrors(err))
     }
 
-    const quitEarly = () => {
-        //clearTimeout(ticker);
-        stop();
-    }
-
     return (<>        
         <PageHeader currentPage="exercise"/>
         <div className="container">        
@@ -105,7 +98,7 @@ export default (props) => {
                 <h4>The category is...</h4>
                 <h3>{category}</h3>
                 <Timer seconds={seconds}/>
-                    <Button variant="contained" color="secondary" onClick={quitEarly}>
+                    <Button variant="contained" color="secondary" onClick={stop}>
                         {transcript.length===0 ? "New Category" : "Quit Early"}
                     </Button>
                 <Transcript text={transcript} />
