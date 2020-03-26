@@ -21,6 +21,7 @@ export default (props) => {
     const [seconds, setSeconds] = useState(0);
     const [transcript, setTranscript] = useState("");
     const [category, setCategory] = useState("");
+    //let ticker;
 
     const { listen, listening, stop, supported } = useSpeechRecognition({
         onResult: result => {
@@ -40,11 +41,6 @@ export default (props) => {
             Learn more about browser compatibility</a></div>);
     }
 
-    // useEffect(() => {
-    //     console.log("   listening: " + listening);        
-    // }, [listening]);
-
-
    useEffect(() => {  //listen() has to run in useEffect or it will throw errors.  
         setNewCategory();        
         listen({interimResults:false});
@@ -52,14 +48,17 @@ export default (props) => {
     }, []);
 
     useEffect(() => {
-        setTimeout(() => {
+        //console.log("timer useEffect fired. seconds = " + seconds); 
+
+        const ticker = setTimeout(() => {  
             if(seconds > 0) {
                 if (listening) setSeconds(seconds - 1)
-                else stop(); //setSeconds(0);
-            } else if (listening) {                
+            } else if (listening) { 
                 stop();
             }
-        }, 1000);
+        }, 1000); 
+    
+        return () => clearTimeout(ticker); //cleanup (will unmount)
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [seconds]);
 
@@ -93,6 +92,11 @@ export default (props) => {
             .catch(err => AxiosErrors(err))
     }
 
+    const quitEarly = () => {
+        //clearTimeout(ticker);
+        stop();
+    }
+
     return (<>        
         <PageHeader currentPage="exercise"/>
         <div className="container">        
@@ -101,7 +105,7 @@ export default (props) => {
                 <h4>The category is...</h4>
                 <h3>{category}</h3>
                 <Timer seconds={seconds}/>
-                    <Button variant="contained" color="secondary" onClick={stop}>
+                    <Button variant="contained" color="secondary" onClick={quitEarly}>
                         {transcript.length===0 ? "New Category" : "Quit Early"}
                     </Button>
                 <Transcript text={transcript} />

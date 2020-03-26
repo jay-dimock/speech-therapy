@@ -10,13 +10,23 @@ import SpeechEndpoint from '../constants/SpeechEndpoint';
 import AxiosErrors from '../util/AxiosErrors';
 import WrappedLink from './WrappedLink';
 
+const getTodayLocalDateOnly = () => {
+    // Comments show conversion of example date from UTC to Pacific Daylight Time
+    var todayUtc = new Date(); // 2020-03-26T00:34:03.194Z (local time is 3/25 17:34, so we need to fix the date)
+    var offset = todayUtc.getTimezoneOffset(); // 420
+    var minutesAdjusted = todayUtc.setMinutes(todayUtc.getMinutes() - offset); //1585157643194
+    return new Date(minutesAdjusted).toISOString().substring(0, 10); // 2020-03-25T17:34:03.194Z => "2020-03-25"
+}
+
 const OneDate = (props) => {
     const context = useContext(SessionContext);
     const [data, setData] = useState([]);
     
-    const todayString = new Date().toISOString().substring(0, 10)
+    const todayString = getTodayLocalDateOnly(); //gets local date in string formatted as YYYY-MM-DD 
     const reportDateString = props.date === "today" ? todayString : props.date;
     const isToday = reportDateString === todayString;
+
+    console.log(todayString);
     
     //converting from format YYYY-MM-DD results in the GMT date, not local date. 
     //to prevent this, we have to convert the format to YYYY/MM/DD. see this post:
