@@ -33,6 +33,9 @@ export default (props) => {
         onEnd: () => {
             console.log("on end triggered")
             endExercise();
+        },
+        onError: (error) => {
+            console.log(error);
         }
     })
 
