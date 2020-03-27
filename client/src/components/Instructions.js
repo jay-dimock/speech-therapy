@@ -25,9 +25,6 @@ export default (props) => {
                     able to edit your answers after the exercise is complete.</li>                
                 <li>When the timer reaches zero, you'll be taken to a results view where you can delete 
                     and/or edit incorrect words.</li>
-                <li>To edit a word, simply click on the word and edit it on the spot. <i>CAREFUL</i> -- if you backspace
-                    over the entire word, the word will be deleted, and you won't be able to get it back!</li>
-                
             </ul> 
             <h3>Tips</h3>
             <ul className="spaced">
