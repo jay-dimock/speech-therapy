@@ -7,7 +7,7 @@ import { navigate } from '@reach/router';
 import SpeechEndpoint from "../constants/SpeechEndpoint";
 import SessionContext from '../util/SessionContext';
 import AxiosErrors from '../util/AxiosErrors';
-//import Link from './Link';
+import Link from './Link';
 
 const genericError = {
     padding: "10px 15px",
@@ -68,9 +68,9 @@ export default () => {
             <TextInput labelText="Password" fieldName="password" type="password"
                 value={user.password} error={errors["password"]} changeHandler={changeHandler}/>
 
-            <Button type="button" variant="contained" color="primary" onClick={login}>Log In</Button>
+            <Button style={{margin:"10px"}} type="button" variant="contained" color="primary" onClick={login}>Log In</Button>
         </form>
-            {/* <Link onClick={guestLogin}>Log in as Guest</Link> */}
+        <Link onClick={guestLogin}>Log in as Guest</Link>
         {errors["error"] && 
             <FormHelperText style={genericError}  error={true}>{errors["error"]}</FormHelperText> 
         }        

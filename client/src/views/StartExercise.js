@@ -80,6 +80,11 @@ export default (props) => {
     }
 
     const endExercise = () => {
+        if (context.session.userId === "guest") {
+            navigate('/exercise/fresh');
+            return;
+        }
+
         if (transcript.length === 0) {
             navigate('/exercise/restart');
             return;

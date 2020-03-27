@@ -47,7 +47,12 @@ export default (props) => {
     } else {
         links.push({text:"Exercises", path:"/exercise/fresh", disabled: currentPage === "exercise"});
         links.push({text:"Reports", path:"/reports/onedate/today", disabled: currentPage === "reports"});
-        links.push({text:"Log Out", path:"/logout", disabled: false});
+
+        if (context.session.userId === "guest") {
+            links.push({text:"Register", path:"/register", disabled: false});
+        } else {
+            links.push({text:"Log Out", path:"/logout", disabled: false});
+        }
     }   
 
     const followLink = (path, disabled) => {
@@ -88,7 +93,7 @@ export default (props) => {
                     style={linkStyle} 
                     onClick={() => followLink(link.path, link.disabled)}
                     selected={link.disabled}>
-                    {link.text === "Log Out" && <span>{context.session.firstName}: </span>}
+                    {(link.text === "Log Out" || link.text === "Register") && <span>{context.session.firstName}: </span>}
                     {link.text}
                 </MenuItem>
             )}

@@ -63,7 +63,7 @@ export default () => {
             <TextInput labelText="Confirm Password" fieldName="passwordConfirm" type="password"
                 value={newUser.passwordConfirm} error={errors["passwordConfirm"]} changeHandler={changeHandler}/>
             
-            <Button type="button" variant="contained" color="primary" onClick={register}>Register</Button>
+            <Button style={{margin:"10px"}} type="button" variant="contained" color="primary" onClick={register}>Register</Button>
         </form>
     )
 }
