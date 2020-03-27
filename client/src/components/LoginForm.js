@@ -32,7 +32,7 @@ export default () => {
     const login = (e) => {
         e.preventDefault();
         
-        axios.post(SpeechEndpoint + "login", user)
+        axios.post(SpeechEndpoint + "user/login", user)
             .then(res => {
                 console.log(res.data);
                 //console.log("session (from login form) before update:", context.session);
@@ -41,6 +41,7 @@ export default () => {
                     userId: res.data._id,
                     firstName: res.data.firstName,
                     lastName: res.data.lastName,
+                    theme: res.data.theme,
                 })
                 navigate('/');
             })

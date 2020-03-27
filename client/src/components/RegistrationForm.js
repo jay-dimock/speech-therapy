@@ -30,7 +30,7 @@ export default () => {
         e.preventDefault();
         setErrors({});
 
-        axios.post(SpeechEndpoint + "register", newUser)
+        axios.post(SpeechEndpoint + "user/register", newUser)
             .then(res => {
                 //set session user
                 context.setSession({

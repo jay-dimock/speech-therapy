@@ -1,23 +1,46 @@
 import React, {useContext} from 'react';
-import SessionContext from '../util/SessionContext'
 
+import {navigate} from '@reach/router';
 import {Link} from '@material-ui/core';
 
+import axios from 'axios';
+import AxiosErrors from '../util/AxiosErrors';
+
+import SessionContext from '../util/SessionContext'
+import SpeechEndpoint from '../constants/SpeechEndpoint';
 import PageHeader from '../components/PageHeader'
 import WrappedLink from '../components/WrappedLink';
 import Instructions from '../components/Instructions';
 
-
 export default (props) => {
     const context = useContext(SessionContext);
+    const currentTheme = context.session.theme || "dark";
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+    const saveNewTheme = () => {
+        if (!context.session.userId) {
+            toggleTheme();
+            return;
+        }
+
+        axios.put(SpeechEndpoint + "user/" + context.session.userId, {
+            theme: newTheme
+        })
+        .then(res => toggleTheme())
+        .catch(err => AxiosErrors(err))
+    }
+
+    const toggleTheme = () => {
+        context.setSession ({
+            ...context.session,
+            theme: newTheme
+        });
+        navigate('/')
+    }
 
     return (<>
         <PageHeader currentPage="home"/>
         <div className="container">
-        {/* {context.session.userId && <>
-            <h3>Welcome, {context.session.firstName}!</h3>
-            <WrappedLink to="/exercise"><h4>Start Exercises</h4></WrappedLink>
-        </>} */}
         
         <h2>About</h2>
         <p className="left">This site provides a specific type of cognitive speech therapy 
@@ -28,10 +51,12 @@ export default (props) => {
             This may change in the future. See "Browser Support" 
             on <Link href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API#Browser_support">
             this page</Link> for updates.</p>
+
+        <Link component="button" onClick={saveNewTheme} >Switch to {newTheme} theme</Link> 
         
         {!context.session.userId && <Instructions alwaysShow={true}/>}
         {!context.session.userId && <p>Ready to begin? <WrappedLink to="/login">Log In</WrappedLink></p> }
-        
+
         {context.session.userId && <p>GetStarted: <WrappedLink to="/exercise/instructions">Exercises / Instructions</WrappedLink></p>}
         </div>
     </>)

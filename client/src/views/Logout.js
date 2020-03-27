@@ -6,7 +6,7 @@ export default () => {
     const context = useContext(SessionContext);
     
     useEffect(() => {        
-        context.setSession({});
+        context.setSession({ theme: context.session.theme });
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     

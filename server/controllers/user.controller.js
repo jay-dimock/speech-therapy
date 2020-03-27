@@ -34,9 +34,21 @@ module.exports.login = (req, res) => {
                     return res.json({
                         _id: user._id,
                         firstName: user.firstName,
-                        lastName: user.lastName
+                        lastName: user.lastName,
+                        theme: user.theme,
                     });
                 })
         })
+        .catch(err => res.status(400).json(err));
+}
+
+module.exports.updateUser = (req, res) => {
+    User.findOneAndUpdate({ _id: req.params.id }, req.body, {new:true})
+        .then(user => res.json({user: user}))
+            // if (user !== null) {
+            //     user.theme = req.body.theme;
+            //     user.save();
+            // }
+
         .catch(err => res.status(400).json(err));
 }

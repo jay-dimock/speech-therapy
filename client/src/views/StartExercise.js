@@ -3,12 +3,12 @@ import { useSpeechRecognition } from 'react-speech-kit'; //https://github.com/Mi
 import axios from 'axios';
 
 import { Redirect, navigate } from '@reach/router'
-import {Button} from '@material-ui/core';
+import { Button } from '@material-ui/core';
 
 import SpeechEndpoint from '../constants/SpeechEndpoint';
 import SessionContext from '../util/SessionContext';
 import PageHeader from '../components/PageHeader';
-import Categories from '../constants/Categories';
+import { Categories, allowCaps } from '../constants/Categories';
 import Timer from '../components/Timer';
 import Transcript from '../components/Transcript';
 import AxiosErrors from '../util/AxiosErrors';
@@ -18,6 +18,8 @@ export default (props) => {
     const context = useContext(SessionContext);
     if (!context.session.userId) { return <Redirect noThrow to="/login" /> }
 
+    let lowercase = true;
+
     const [seconds, setSeconds] = useState(0);
     const [transcript, setTranscript] = useState("");
     const [category, setCategory] = useState("");
@@ -25,7 +27,8 @@ export default (props) => {
     const { listen, listening, stop, supported } = useSpeechRecognition({
         onResult: result => {
             console.log("on result triggered")
-            setTranscript(prevTranscript => prevTranscript + " " + result);
+            const newTranscript = (lowercase) ? result.toLowerCase() : result;
+            setTranscript(prevTranscript => prevTranscript + " " + newTranscript);
         },
         onEnd: () => {
             console.log("on end triggered")
@@ -67,6 +70,7 @@ export default (props) => {
             console.log("Random new category matches last category. Trying again...")
             return setNewCategory();
         }
+        if (allowCaps(newCat)) lowercase = false;
         setCategory(newCat);
         setSeconds(60);
         context.setSession({

@@ -72,3 +72,12 @@ module.exports.date = (req, res) => {
     .then(exercises => res.json(exercises))
     .catch(err => res.status(400).json(err))
 }
+
+module.exports.allExercises = (req, res) => {
+    Exercise.aggregate([ 
+        {$match: {"userId": "5e790cf60fdeac33b8f66fd1"}}, 
+        {$project: { category:1, words:1, localDate: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: req.params.timezone }}}}, 
+    ])
+    .then(exercises => res.json(exercises))
+    .catch(err => res.status(400).json(err))
+}

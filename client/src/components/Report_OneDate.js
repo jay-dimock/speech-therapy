@@ -1,7 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react';
 import { navigate } from '@reach/router'
 import axios from 'axios';
-//import DateOnly from 'dateonly';
 
 import { Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
 
@@ -26,8 +25,6 @@ const OneDate = (props) => {
     const reportDateString = props.date === "today" ? todayString : props.date;
     const isToday = reportDateString === todayString;
 
-    console.log(todayString);
-    
     //converting from format YYYY-MM-DD results in the GMT date, not local date. 
     //to prevent this, we have to convert the format to YYYY/MM/DD. see this post:
     //https://stackoverflow.com/questions/7556591/is-the-javascript-date-object-always-one-day-off

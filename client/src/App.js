@@ -6,9 +6,8 @@ import {getSessionCookie, setSessionCookie} from './util/SessionCookie';
 
 import { Router } from '@reach/router';
 import {CssBaseline} from '@material-ui/core';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import {green} from '@material-ui/core/colors';
-
+import { ThemeProvider } from '@material-ui/core/styles';
+import getTheme from './util/Theme';
 import Main from './views/Main';
 import Register from './views/Register';
 import Login from './views/Login';
@@ -17,14 +16,7 @@ import Exercise from './views/Exercise';
 import StartExercise from './views/StartExercise';
 import EditExercise from './views/EditExercise';
 import Reports from './views/Reports';
-import OldBrowser from './views/OldBrowser';
-
-const theme = createMuiTheme({ 
-  palette: { 
-    type: 'dark', 
-    primary: green,
-  } 
-});
+//import OldBrowser from './views/OldBrowser';
 
 function App() {
   const [session, setSession] = useState(getSessionCookie());
@@ -33,6 +25,8 @@ function App() {
     console.log("persisting session via useEffect")
     setSessionCookie(session);
   }, [session])
+
+  const theme = getTheme(session.theme);
 
   return (
     <div className="App">
@@ -49,7 +43,7 @@ function App() {
               <EditExercise path="editexercise/:id" />              
               <Reports path="reports/:report/:param" />  
               <Reports path="reports" />  
-              <OldBrowser path="oldbrowser" />
+              {/* <OldBrowser path="oldbrowser" /> */}
           </Router>
         </ThemeProvider>
       </SessionContext.Provider>

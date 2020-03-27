@@ -5,6 +5,7 @@
 .container {
   max-width:790px;
   margin: 0 auto;
+  padding:0 20px;
 }
 
 .left { text-align:left; }
@@ -12,3 +13,27 @@
 ul.spaced li {
   margin-bottom:0.4rem;
 }
+
+.smallScreen {
+  display:none;
+}
+
+.smallScreen h2 {
+  display:inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.bigScreen {
+  display:block;
+}
+
+@media only screen and (max-width: 550px) {
+    .bigScreen { display: none; }
+    .smallScreen { display: block; }
+    .container {padding:10px;}
+}
+
+/* @media only screen and (min-width: 501px) {
+    .smallMenu {display: none;}
+} */
