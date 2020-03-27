@@ -1,9 +1,10 @@
 import React, {useContext, useState, useEffect} from 'react';
-import { useSpeechRecognition } from 'react-speech-kit'; //https://github.com/MikeyParton/react-speech-kit
+//import { useSpeechRecognition } from 'react-speech-kit'; //https://github.com/MikeyParton/react-speech-kit
+import useSpeechRecognition from '../util/SpeechRecognition';
 import axios from 'axios';
 
 import { Redirect, navigate } from '@reach/router'
-import { Button } from '@material-ui/core';
+import { Button, Link } from '@material-ui/core';
 
 import SpeechEndpoint from '../constants/SpeechEndpoint';
 import SessionContext from '../util/SessionContext';
@@ -12,7 +13,6 @@ import { Categories, allowCaps } from '../constants/Categories';
 import Timer from '../components/Timer';
 import Transcript from '../components/Transcript';
 import AxiosErrors from '../util/AxiosErrors';
-
 
 export default (props) => {
     const context = useContext(SessionContext);
@@ -37,10 +37,13 @@ export default (props) => {
     })
 
     if(!supported) {
-        return (<div>This browser does not support the Web Speech API.
+        return (<>
+            <PageHeader currentPage="exercise"/>
+            <h2>Exercises</h2>
+            <div>This browser does not support the Web Speech API.<br/>
             Try opening this site in Google Chrome (Desktop or Android, but NOT iOS). 
-            <br/><a href='https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API#Browser_support'>
-            Learn more about browser compatibility</a></div>);
+            <br/><Link href='https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API#Browser_support'>
+            Learn more about browser compatibility</Link></div></>);
     }
 
    useEffect(() => {  //listen() has to run in useEffect or it will throw errors.  
