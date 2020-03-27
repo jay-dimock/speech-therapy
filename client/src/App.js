@@ -7,7 +7,7 @@ import {getSessionCookie, setSessionCookie} from './util/SessionCookie';
 import { Router } from '@reach/router';
 import {CssBaseline} from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import getTheme from './util/Theme';
+import {getTheme} from './util/Theme';
 import Main from './views/Main';
 import Register from './views/Register';
 import Login from './views/Login';

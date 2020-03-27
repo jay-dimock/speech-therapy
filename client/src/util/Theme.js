@@ -10,7 +10,7 @@ import teal from '@material-ui/core/colors/teal'
 // NO : import lime from '@material-ui/core/colors/lime'
 // NO: import blueGrey from '@material-ui/core/colors/blueGrey'
 
-const getTheme = (darkOrLight) => {
+export const getTheme = (darkOrLight) => {
     if (!darkOrLight) darkOrLight = "dark";
 
     //const shade = (darkOrLight === "dark") ? 300 : 800;
@@ -25,4 +25,3 @@ const getTheme = (darkOrLight) => {
     return theme;
 }
 
-export default getTheme;

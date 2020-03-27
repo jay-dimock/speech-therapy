@@ -54,7 +54,7 @@ module.exports.deleteExercise = (req, res) => {
 module.exports.dates = (req, res) => {
     //console.log("dates endpoint", req.params);
     Exercise.aggregate([
-        {$match: {"userId": "5e790cf60fdeac33b8f66fd1"}}, 
+        {$match: {"userId": req.params.userId}}, 
         {$project: {_id:0, localDate: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: req.params.timezone }}}}, 
         {$group: {_id: "$localDate", "sum": {$sum: 1}}}
     ])
@@ -65,7 +65,7 @@ module.exports.dates = (req, res) => {
 module.exports.date = (req, res) => {
     //console.log("date endpoint", req.params);    
     Exercise.aggregate([ 
-        {$match: {"userId": "5e790cf60fdeac33b8f66fd1"}}, 
+        {$match: {"userId": req.params.userId}}, 
         {$project: { category:1, words:1, localDate: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: req.params.timezone }}}}, 
         {$match: {localDate: req.params.date}} 
     ])
@@ -75,7 +75,7 @@ module.exports.date = (req, res) => {
 
 module.exports.allExercises = (req, res) => {
     Exercise.aggregate([ 
-        {$match: {"userId": "5e790cf60fdeac33b8f66fd1"}}, 
+        {$match: {"userId": req.params.userId}}, 
         {$project: { category:1, words:1, localDate: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: req.params.timezone }}}}, 
     ])
     .then(exercises => res.json(exercises))

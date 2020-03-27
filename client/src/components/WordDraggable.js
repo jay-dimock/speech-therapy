@@ -35,7 +35,7 @@ export default (props) => {
             const hoverIndex = index; // current element where the dragged element is hovered on
             if (dragIndex === hoverIndex) return; // If the dragged element is droppedin the same place, do nothing
             combineWords(dragIndex, hoverIndex, item.id, word);
-            console.log("item:", item, "word:", word);
+            //console.log("item:", item, "word:", word);
             /*
               Update the index for dragged item directly to avoid flickering
               when the image was half dragged into the next
@@ -61,7 +61,7 @@ export default (props) => {
     drag(drop(ref));
 
     const combineWords = (dragIndex, hoverIndex, dragWord, hoverWord) => {
-        console.log("dragIndex:", dragIndex, " hoverIndex:", hoverIndex);
+        //console.log("dragIndex:", dragIndex, " hoverIndex:", hoverIndex);
         //always set the target index to the hover index. this is the index native to the current WordDraggable.
         const newWord = (dragIndex > hoverIndex) ? hoverWord + " " + dragWord : dragWord + " " + hoverWord;
         //console.log(newWord);

@@ -16,7 +16,7 @@ ul.spaced li {
 
 .smallScreen {
   display:none;
-}
+} 
 
 .smallScreen h2 {
   display:inline-block;
@@ -28,12 +28,17 @@ ul.spaced li {
   display:block;
 }
 
+.linkdark { 
+  color: #4db6ac !important;
+}
+
+.linklight { 
+  color: #00796b !important;
+}
+
 @media only screen and (max-width: 550px) {
     .bigScreen { display: none; }
     .smallScreen { display: block; }
-    .container {padding:10px;}
+    .container { padding:10px; }
 }
 
-/* @media only screen and (min-width: 501px) {
-    .smallMenu {display: none;}
-} */

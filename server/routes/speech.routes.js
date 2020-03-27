@@ -14,7 +14,7 @@ module.exports = app => {
     app.put('/api/speech/exercise/:id/deleteWord', ExerciseController.deleteWord);
     app.delete('/api/speech/exercise/:id', ExerciseController.deleteExercise);
 
-    app.get('/api/speech/reports/allexercises/:timezone/:id', ExerciseController.allExercises);
+    app.get('/api/speech/reports/allexercises/:timezone/:userId', ExerciseController.allExercises);
     app.get('/api/speech/reports/alldates/:timezone/:userId', ExerciseController.dates);
     app.get('/api/speech/reports/onedate/:date/:timezone/:userId', ExerciseController.date);
 }

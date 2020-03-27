@@ -7,6 +7,7 @@ import { navigate } from '@reach/router';
 import SpeechEndpoint from "../constants/SpeechEndpoint";
 import SessionContext from '../util/SessionContext';
 import AxiosErrors from '../util/AxiosErrors';
+//import Link from './Link';
 
 const genericError = {
     padding: "10px 15px",
@@ -41,13 +42,22 @@ export default () => {
                     userId: res.data._id,
                     firstName: res.data.firstName,
                     lastName: res.data.lastName,
-                    theme: res.data.theme,
+                    theme: res.data.theme
                 })
                 navigate('/');
             })
             .catch(err => {
                 setErrors(AxiosErrors(err));
             })
+    }
+
+    const guestLogin = () => {
+        context.setSession ({
+            ...context.session,
+            userId: "guest",
+            firstName: "Guest",
+        })
+        navigate('/');
     }
 
     return (<>
@@ -60,6 +70,7 @@ export default () => {
 
             <Button type="button" variant="contained" color="primary" onClick={login}>Log In</Button>
         </form>
+            {/* <Link onClick={guestLogin}>Log in as Guest</Link> */}
         {errors["error"] && 
             <FormHelperText style={genericError}  error={true}>{errors["error"]}</FormHelperText> 
         }        

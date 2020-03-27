@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
-import {Link} from '@material-ui/core';
+//import {Link} from '@material-ui/core';
+import Link from './Link';
 import WrappedLink from './WrappedLink';
 
 export default (props) => {
-    const [show, setShow] = useState(props.show || props.alwaysShow || false);    
+    const [show, setShow] = useState(props.show || props.alwaysShow || false);
 
     return (<div> 
         {show && <h2 style={{marginBottom:"0"}}>Instructions</h2> }
-
-        {!show && <div style={{marginTop:"20px"}}></div> }
+        {!show && <div style={{marginTop:"20px"}}></div> }        
 
         {!props.alwaysShow && 
             <Link style={{marginBottom:"0.5rem"}} component="button" onClick={()=>setShow(!show)}>
@@ -36,8 +36,7 @@ export default (props) => {
                     click the "Quit Early" button.</li>
                 <li>Sometimes an answer is made up of more than one word. For example, "North Carolina". The speech
                     software will record this as two separate words. When you get to the results screen, you can
-                    combine them back into one word. In this example, you would click at the end of the word "North"
-                    and type "Carolina", then delete the separate word "Carolina". </li>
+                    combine them back into one word by dragging and dropping one word onto another.</li>
                 <li>To go back and edit the exercise later, you can access it from 
                     the <WrappedLink to="/reports">Reports Page</WrappedLink>. <i>You can only edit today's exercises. 
                     Earlier dates cannot be modified.</i></li>

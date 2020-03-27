@@ -7,8 +7,8 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuIcon from '@material-ui/icons/Menu';
-//import Link from '@material-ui/core/Link';
 
+//import {fontStyle} from '../util/Theme';
 import SessionContext from '../util/SessionContext';
 
 
@@ -30,6 +30,7 @@ export default (props) => {
     const { currentPage } = props;
     const links = [];
     const [anchorEl, setAnchorEl] = React.useState(null);
+    //const textStyle = fontStyle(context.session.theme);
 
     const handleClick = event => {
         setAnchorEl(event.currentTarget);
