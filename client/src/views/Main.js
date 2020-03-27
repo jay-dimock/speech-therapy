@@ -11,20 +11,15 @@ import SpeechEndpoint from '../constants/SpeechEndpoint';
 import PageHeader from '../components/PageHeader'
 import WrappedLink from '../components/WrappedLink';
 import Instructions from '../components/Instructions';
-//import Typography from '@material-ui/core/Typography';
-//import {fontStyle} from '../util/Theme';
-
 
 export default (props) => {
     const context = useContext(SessionContext);
     const currentTheme = context.session.theme || "dark";
     const newTheme = currentTheme === "dark" ? "light" : "dark";
-    //const textStyle = fontStyle(context.session.theme);
-    //console.log(textStyle);
     const linkClass = "link" + currentTheme;
 
     const saveNewTheme = () => {
-        if (!context.session.userId) {
+        if (!context.session.userId || context.session.userId === "guest") {
             toggleTheme();
             return;
         }
@@ -44,8 +39,6 @@ export default (props) => {
         navigate('/')
     }
 
-    // style={{color: "#4db6ac"}}
-
     return (<>
         <PageHeader currentPage="home"/>
         <div className="container">
@@ -59,12 +52,12 @@ export default (props) => {
             on <Link className={linkClass} href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API#Browser_support">
             this page</Link> for updates.</p>
 
-        <Link component="button" onClick={saveNewTheme} className={linkClass}>Switch to {newTheme} theme</Link> 
+        <p>Theme: <Link component="button" onClick={saveNewTheme} className={linkClass}>Switch to {newTheme} theme</Link></p>
         
         {!context.session.userId && <Instructions alwaysShow={true}/>}
         {!context.session.userId && <p>Ready to begin? <WrappedLink to="/login">Log In</WrappedLink></p> }
 
-        {context.session.userId && <p>GetStarted: <WrappedLink to="/exercise/instructions">Exercises / Instructions</WrappedLink></p>}
+        {context.session.userId && <p>Get started: <WrappedLink to="/exercise/instructions">Exercises / Instructions</WrappedLink></p>}
         </div>
     </>)
 }

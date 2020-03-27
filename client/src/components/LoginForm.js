@@ -35,8 +35,6 @@ export default () => {
         
         axios.post(SpeechEndpoint + "user/login", user)
             .then(res => {
-                console.log(res.data);
-                //console.log("session (from login form) before update:", context.session);
                 context.setSession({
                     ...context.session,
                     userId: res.data._id,

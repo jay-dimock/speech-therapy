@@ -22,7 +22,6 @@ export default () => {
     const [errors, setErrors] = useState({});
 
     const changeHandler = (fieldName, value) => {
-        //console.log(fieldName, value);
         setNewUser({ ...newUser, [fieldName]: value })
     }
 
@@ -32,7 +31,6 @@ export default () => {
 
         axios.post(SpeechEndpoint + "user/register", newUser)
             .then(res => {
-                //set session user
                 context.setSession({
                     ...context.session,
                     userId: res.data._id,
