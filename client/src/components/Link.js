@@ -8,6 +8,11 @@ export default (props) => {
     const currentTheme = context.session.theme || "dark";
     const linkClass = "link" + currentTheme;
 
+    //"chrome://settings/content/microphone"
+    if (props.to) return (
+        <Link className={linkClass} href={props.to} onClick={props.onClick}>{props.children}</Link>
+    )
+
     return (
         <Link className={linkClass} component="button" onClick={props.onClick}>{props.children}</Link>
     )    

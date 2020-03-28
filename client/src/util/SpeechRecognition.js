@@ -22,30 +22,34 @@ const useSpeechRecognition = (props = {}) => {
         onResult(transcript);
     };
 
+    const handleError = (event) => {
+        if (event.error === "not-allowed") {
+            recognition.current = new window.SpeechRecognition();  
+        }
+        onError(event);
+    }
+
     const listen = (args = {}) => {
         if (listening) return;
         const {
             lang = '', interimResults = true, continuous = false, maxAlternatives = 1, grammars
         } = args;
         
-        try {
-            setListening(true);
-            recognition.current.lang = lang;
-            recognition.current.interimResults = interimResults;
-            recognition.current.onresult = processResult;
-            recognition.current.onerror = (e) => onError(e);
-            recognition.current.continuous = continuous;
-            recognition.current.maxAlternatives = maxAlternatives;
-            if (grammars) {
-                recognition.current.grammars = grammars;
-            }
-            // SpeechRecognition stops automatically after inactivity
-            // We want it to keep going until we tell it to stop
-            recognition.current.onend = () => recognition.current.start();        
-            recognition.current.start();
-        } catch (err) {
-            onError(err);
-        }        
+        setListening(true);
+        recognition.current.lang = lang;
+        recognition.current.interimResults = interimResults;
+        recognition.current.onresult = processResult;
+        recognition.current.onerror = handleError;
+        recognition.current.continuous = continuous;
+        recognition.current.maxAlternatives = maxAlternatives;
+        if (grammars) {
+            recognition.current.grammars = grammars;
+        }
+
+        // SpeechRecognition stops automatically after inactivity
+        // We want it to keep going until we tell it to stop
+        recognition.current.onend = () => recognition.current.start();        
+        recognition.current.start();     
     };
 
     const stop = () => {
@@ -60,7 +64,7 @@ const useSpeechRecognition = (props = {}) => {
 
     useEffect(() => {
         if (!supported) return;
-        recognition.current = new window.SpeechRecognition();
+        recognition.current = new window.SpeechRecognition();        
     }, []);
 
     return { listen, listening, stop, supported };

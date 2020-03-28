@@ -23,6 +23,7 @@ export default (props) => {
     const [seconds, setSeconds] = useState(0);
     const [transcript, setTranscript] = useState("");
     const [category, setCategory] = useState("");
+    //const [allowed, setAllowed] = useState(true);
 
     const { listen, listening, stop, supported } = useSpeechRecognition({
         onResult: result => {
@@ -34,8 +35,12 @@ export default (props) => {
             console.log("on end triggered")
             endExercise();
         },
-        onError: (error) => {
-            console.log(error);
+        onError: (e) => {
+            console.log(e);
+            if(e.error === "not-allowed") {
+                console.log("Detected microphone block")
+                navigate('/exercise/notallowed');
+            }
         }
     })
 
@@ -65,7 +70,10 @@ export default (props) => {
             }
         }, 1000); 
     
-        return () => clearTimeout(ticker); //cleanup (will unmount)
+        return () => { //cleanup (will unmount)
+            clearTimeout(ticker); 
+            //if(listening) stop();
+        }
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [seconds]);
 
@@ -86,7 +94,7 @@ export default (props) => {
     }
 
     const endExercise = () => {
-        if (context.session.userId === "guest") {
+        if (context.session.userId === "guest") {            
             navigate('/exercise/fresh');
             return;
         }
