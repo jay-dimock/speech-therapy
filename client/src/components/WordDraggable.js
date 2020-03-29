@@ -10,23 +10,22 @@ import SpeechEndpoint from '../constants/SpeechEndpoint';
 import AxiosErrors from '../util/AxiosErrors';
 import DeleteWord from './DeleteWord';
 
-const iconStyle = {
-    verticalAlign: "middle", 
-    paddingLeft: "5px"
-}
-
-
 export default (props) => {
-    const { exerciseId, index, deleteWord } = props;
+    const { exerciseId, index, deleteWord, isTouchDevice } = props;
     const [word, setWord] = useState(props.word);
     const ref = useRef(null);
+
+    const iconStyle = {
+        verticalAlign: "middle", 
+        paddingLeft: isTouchDevice ? "10px" : "5px"
+    }
 
     // useDrop hook is responsible for handling whether any item gets hovered or dropped on the element
     const [, drop] = useDrop({
         // Accept will make sure only these element type can be droppable on this element
         accept: "WordDraggable",
         hover(item) {
-            //todo: show a tool tip with the anticipated combined words, prior to dropping
+            //todo: show a tool tip with the anticipated combined words, prior to dropping?
             //console.log("hovering: " + (item.index > index ? word + " " + item.id : item.id + " " + word));
         },
         drop(item) { // item is the dragged element
@@ -35,11 +34,8 @@ export default (props) => {
             const hoverIndex = index; // current element where the dragged element is hovered on
             if (dragIndex === hoverIndex) return; // If the dragged element is droppedin the same place, do nothing
             combineWords(dragIndex, hoverIndex, item.id, word);
-            //console.log("item:", item, "word:", word);
-            /*
-              Update the index for dragged item directly to avoid flickering
-              when the image was half dragged into the next
-            */
+
+            //Update the index for dragged item directly to avoid flickering when the item was half dragged into the next
             item.index = hoverIndex;
         }
     });
@@ -54,17 +50,14 @@ export default (props) => {
         })
     });
 
-    /* 
-        Initialize drag and drop into the element using its reference.
-        Here we initialize both drag and drop on the same element (i.e., WordDraggable component)
-    */
+    //Initialize drag and drop into the element using its reference.
+    //Here we initialize both drag and drop on the same element (i.e., WordDraggable component)    
     drag(drop(ref));
 
     const combineWords = (dragIndex, hoverIndex, dragWord, hoverWord) => {
         //console.log("dragIndex:", dragIndex, " hoverIndex:", hoverIndex);
         //always set the target index to the hover index. this is the index native to the current WordDraggable.
         const newWord = (dragIndex > hoverIndex) ? hoverWord + " " + dragWord : dragWord + " " + hoverWord;
-        //console.log(newWord);
         updateWord(newWord, dragIndex);
     }
 
@@ -87,20 +80,28 @@ export default (props) => {
         display: "inline-block",
         border: "1px solid lightgray",
         borderRadius: "6px",
-        padding: "4px 8px",
-        margin: "7px 8px",
-        opacity: isDragging ? 0 : 1,
+        padding: isTouchDevice ? "5px 10px" : "4px 8px",
+        margin: isTouchDevice ? "10px 10px" : "7px 8px",
+        opacity: isDragging ? 0.25 : 1,
+    }
+
+    const contentStyle = {
+        display:"inline-block", 
+        marginLeft: isTouchDevice ? "10px" : "5px"
     }
 
     return (<Paper style={wordStyle} ref={ref}>
         <DeleteWord action={() => deleteWord(index)} />
 
         <ContentEditable 
-            style={{display:"inline-block", marginLeft: "5px"}} 
+            style={contentStyle} 
             html={word} 
             onKeyPress={(e) => disableNewLines(e)}
             onChange={(e) => updateWord(e.target.value.trim())}/>
         
-        <FlipToFrontIcon style={iconStyle} color="primary" /> 
+        <FlipToFrontIcon 
+            style={iconStyle} 
+            color="primary" 
+            fontSize={isTouchDevice ? "large" : "small"} /> 
     </Paper>);
 }

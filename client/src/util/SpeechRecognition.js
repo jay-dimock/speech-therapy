@@ -64,7 +64,8 @@ const useSpeechRecognition = (props = {}) => {
 
     useEffect(() => {
         if (!supported) return;
-        recognition.current = new window.SpeechRecognition();        
+        recognition.current = new window.SpeechRecognition();     
+        //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return { listen, listening, stop, supported };

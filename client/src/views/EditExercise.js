@@ -46,7 +46,7 @@ export default (props) => {
             <Button variant="contained" color="primary" onClick={() => navigate("/startexercise")}>Start New Exercise</Button>
             <h4>You recorded <b>{words.length} words!</b></h4>
             <Link style={{marginBottom:"0.5rem"}} component="button" onClick={()=>setShowInstructions(!showInstructions)}>
-                {showInstructions ? "Hide Instructions" : "Instructions"}
+                {showInstructions ? "Hide Instructions" : "Editing Instructions"}
             </Link>
             {showInstructions && <>
                 <p>To edit a word, by typing over it (if you back-space over it, the word will be deleted).</p><p>

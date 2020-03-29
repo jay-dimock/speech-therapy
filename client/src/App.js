@@ -16,13 +16,11 @@ import Exercise from './views/Exercise';
 import StartExercise from './views/StartExercise';
 import EditExercise from './views/EditExercise';
 import Reports from './views/Reports';
-//import OldBrowser from './views/OldBrowser';
 
 function App() {
   const [session, setSession] = useState(getSessionCookie());
 
   useEffect(() => {
-    console.log("persisting session via useEffect")
     setSessionCookie(session);
   }, [session])
 
@@ -43,7 +41,6 @@ function App() {
               <EditExercise path="editexercise/:id" />              
               <Reports path="reports/:report/:param" />  
               <Reports path="reports" />  
-              {/* <OldBrowser path="oldbrowser" /> */}
           </Router>
         </ThemeProvider>
       </SessionContext.Provider>

@@ -4,10 +4,14 @@ import { navigate } from '@reach/router'
 
 import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
+import TouchBackend from "react-dnd-touch-backend";
 
 import SpeechEndpoint from '../constants/SpeechEndpoint';
 import AxiosErrors from '../util/AxiosErrors';
 import WordDraggable from '../components/WordDraggable';
+
+const isTouchDevice = "ontouchstart" in window;
+const backendForDnd = isTouchDevice ? TouchBackend : HTML5Backend;
 
 export default (props) => {
     const {words, setWords} = props;
@@ -18,7 +22,6 @@ export default (props) => {
         setDeleting(true);
         axios.put(SpeechEndpoint + "exercise/" + props.exerciseId + "/deleteWord", {index: index})
             .then(response => {
-                //console.log(response.data);
                 if (response.data.words.length > 0) setWords(response.data.words);
                 else deleteExercise();
             })
@@ -36,11 +39,17 @@ export default (props) => {
     }
 
 
-    return (<div style={{marginTop:"15px", overflow:"wrap"}}>
-        <DndProvider backend={HTML5Backend}>
+    return (<div style={{marginTop:"15px"}}>
+        <DndProvider backend={backendForDnd}>
             {words.map((word, i) => {
                 return (
-                    <WordDraggable key={word+i} index={i} exerciseId={props.exerciseId} word={word} deleteWord={deleteWord}/>
+                    <WordDraggable 
+                        key={word+i} 
+                        index={i} 
+                        exerciseId={props.exerciseId} 
+                        word={word} 
+                        deleteWord={deleteWord}
+                        isTouchDevice={isTouchDevice} />
                 );
             })}
         </DndProvider>        
